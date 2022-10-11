@@ -1,0 +1,219 @@
+# Default values for generic-deployment.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: foo
+fullnameOverride: bar
+
+annotations: {}
+
+replicaCount: null
+revisionHistoryLimit: 2
+image:
+  repository: foo
+  tag: v1
+  pullPolicy: IfNotPresent
+
+
+imagePullSecrets: []
+  # - sample-image-secret
+
+restartPolicy: Always
+
+customLabel: {}
+customPodAnnotations: {}
+customPodLabel: {}
+customPodSelector: {}
+
+env: []
+  # - name: foo
+  #   value: bar
+  # - name: foo
+  #   configmap:
+  #     name: CONFIGMAP_NAME
+  #     key: CONFIGMAP_KEY
+  # - name: foo
+  #   secret:
+  #     name: SECRET_NAME
+  #     key: SECRET_VALUE
+  # - name: MY_NODE_NAME
+  #   fieldPath: spec.nodeName
+
+envFrom: {}
+  # secretName: foo
+  # configmapName: foo
+
+containerPorts: []
+  # - name: http
+  #   value: 80
+
+hostAliases: []
+  # - hostnames: SAMEPLE_HOST
+  #   ip: SAMPLE_IP_ADDR
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 200Mi
+
+nodeSelector: {}
+
+tolerations: {}
+
+affinity: {}
+
+# Horizontal Pod autoscaler
+autoscale:
+  create: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50
+
+
+service:
+  create: false
+  # type: NodePort
+  # annotation: {}
+  # ports:
+  #   - name: inbound-http
+  #     protocol: TCP
+  #     externalPort: 80
+  #     internalPort: 80
+  #     nodePort: 30050
+  # type: LoadBalancer
+  # loadBalancerIP: ""
+  # loadBalancerSourceRanges: []
+  # annotations: {}
+  # ports:
+  #   - name: inbound-http
+  #     protocol: TCP
+  #     externalPort: 80
+  #     internalPort: 80
+  type: ClusterIP
+  annotations: {}
+  ports:
+    - name: inbound-http
+      protocol: TCP
+      externalPort: 80
+      internalPort: 80
+
+serviceHeadless:
+  create: false
+  # annotation: {}
+  # ports:
+  #   - name: inbound-http
+  #     protocol: TCP
+  #     port: 80
+  #     targetPort: 80
+
+healthCheck:
+  create: false
+  readinessProbe:
+    httpGet:
+      path: /
+      port: 80
+      schema: HTTP
+      httpHeader: []
+      # - name: <option>
+      #   value: <option>
+    exec: {}
+      # command:
+      #   - cat
+      #   - /tmp/healthy
+    tcpSocket: {}
+      # port: 80
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 30
+    successThreshold: 1
+    failureThreshold: 3
+  livenessProbe:
+    httpGet:
+      path: /
+      port: 80
+      scheme: HTTP
+      httpHeader: []
+      # - name: <option>
+      #   value: <option>
+    exec: {}
+      # command:
+      #   - cat
+      #   - /tmp/healthy
+    tcpSocket: {}
+      # port: 80
+    initialDelaySeconds: 30
+    timeoutSeconds: 5
+    periodSeconds: 30
+    successThreshold: 1
+    failureThreshold: 3
+
+ingress:
+  create: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+  rules: []
+  # - host: a.example.com
+  #   http:
+  #     paths:
+  #       - path: /
+  #         pathType: Prefix
+  #         backend:
+  #           service:
+  #             port:
+  #               number: 80
+  tls: []
+  # - hosts:
+  #     - a.example.com
+  #     - b.example.com
+  #   secretName: wildcard.example.com
+
+secret:
+  create: false
+  type: kubernetes.io/tls
+  data: {}
+
+configMap:
+  create: false
+  data: {}
+
+volumeMounts: []
+#   - name: foo
+#     mountPath: /var/www/html
+#     readOnly: true
+
+volumes: []
+#   - name: foo
+#     configMap:
+#       name: foo
+#     configMap:
+#       name: foo
+#       items:
+#       - key: index.html
+#         path: index.html
+#   - name: foo
+#     secret:
+#      secretName: foo
+#     secret:
+#       secretName: foo
+#       items:
+#       - key: username
+#         path: my-group/my-username
+#   - name: foo
+#     hostPath:
+#       path: /tmp
+        
+persistence:
+  create: false
+  storageClass: "-"
+  annotations: {}
+  accessMode: ReadWriteOnce
+  size: 10Gi
+
+
+serviceAccount:
+  create: false
+  name:
+  annotations: {}

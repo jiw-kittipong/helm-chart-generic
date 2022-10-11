@@ -1,0 +1,42 @@
+{{- if .Values.service.create }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "generic-deployment.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "generic-deployment.name" . }}
+    helm.sh/chart: {{ include "generic-deployment.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- if .Values.customLabel }}
+{{ toYaml .Values.customLabel | indent 4 }}
+    {{- end }}
+{{- with .Values.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}    # NodePort, ClusterIP, LoadBalancer, ExternalIP
+  {{ if .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{ if .Values.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges: {{ .Values.service.loadBalancerSourceRanges }}
+  {{- end }}
+  ports:
+    {{- range .Values.service.ports }}
+    - name: {{ .name }}
+      protocol: {{ .protocol }}
+      port: {{ .externalPort }}
+      targetPort: {{ .internalPort }}
+      {{- if .nodePort }}
+      nodePort: {{ .nodePort }}
+      {{- end }}
+    {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ include "generic-deployment.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- if .Values.customPodSelector }}
+{{ toYaml .Values.customPodSelector | indent 4 }}
+    {{- end }}
+{{- end }}
