@@ -11,8 +11,13 @@ env:
   HELM_VERSION_TO_INSTALL: 3.5.0
   GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/helm-chart-generic
 
+
+
 jobs:
   build:
+    permissions:
+      packages: write
+      
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -24,7 +29,7 @@ jobs:
     
     - name: Login to acr using helm
       run: |
-        echo ${{ secrets.GH_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+        echo ${{ secrets.GITKUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
     - name: Save helm chart to local registry
       run: |
