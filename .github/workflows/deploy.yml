@@ -17,7 +17,7 @@ jobs:
 
     - name: Install helm
       id: install
-      uses: Azure/setup-helm@v1
+      uses: Azure/setup-helm@v3
       with:
         version: ${{ env.HELM_VERSION_TO_INSTALL }}
     
@@ -31,4 +31,4 @@ jobs:
 
     - name: Publish chart to acr
       run: |
-        helm chart push ${{ env.GCR_IMAGE }}:${{ github.sha }}
+        helm chart push ${{ env.GCR_IMAGE }}:latest
