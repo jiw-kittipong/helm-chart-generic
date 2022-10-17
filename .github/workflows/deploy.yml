@@ -22,7 +22,7 @@ jobs:
         version: ${{ env.HELM_VERSION_TO_INSTALL }}
         token: ${{ secrets.GITHUB_TOKEN }}
     
-#     - name: Login to acr using helm
+#     - name: Login to acr using helm 1
 #       run: |
 #         helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
