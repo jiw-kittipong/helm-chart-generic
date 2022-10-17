@@ -16,14 +16,15 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install helm
+      id: install
       uses: Azure/setup-helm@v3
       with:
         version: ${{ env.HELM_VERSION_TO_INSTALL }}
         token: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Login to acr using helm
-      run: |
-        helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+#     - name: Login to acr using helm
+#       run: |
+#         helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
     - name: Save helm chart to local registry
       run: |
