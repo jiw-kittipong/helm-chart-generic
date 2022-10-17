@@ -24,7 +24,7 @@ jobs:
     
     - name: Login to acr using helm
       run: |
-        echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+        echo ${{ secrets.GH_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
     - name: Save helm chart to local registry
       run: |
