@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  packages: read|write
+
 env:
   HELM_EXPERIMENTAL_OCI: 1
 #   HELM_VERSION_TO_INSTALL: 3.5.0
