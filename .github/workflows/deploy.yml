@@ -8,7 +8,8 @@ env:
   HELM_EXPERIMENTAL_OCI: 1
   HELM_VERSION_TO_INSTALL: 3.5.0
   GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/helm-chart-generic
-
+  VERSION: 1
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,8 +28,8 @@ jobs:
 
     - name: Save helm chart to local registry
       run: |
-        helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:latest
+        helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:${{ env.VERSION }}
 
     - name: Publish chart to acr
       run: |
-        helm chart push ${{ env.GCR_IMAGE }}:latest
+        helm chart push ${{ env.GCR_IMAGE }}:${{ env.VERSION }}
