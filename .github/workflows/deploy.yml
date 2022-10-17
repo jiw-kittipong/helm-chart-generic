@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 env:
   HELM_EXPERIMENTAL_OCI: 1
