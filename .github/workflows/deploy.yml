@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  packages: read|write
+  packages: write
 
 env:
   HELM_EXPERIMENTAL_OCI: 1
