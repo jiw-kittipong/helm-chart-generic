@@ -6,7 +6,7 @@ on:
 
 env:
   HELM_EXPERIMENTAL_OCI: 1
-#   HELM_VERSION_TO_INSTALL: 3.5.0
+  HELM_VERSION_TO_INSTALL: 3.5.0
   GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/helm-chart-generic
 
 jobs:
@@ -17,12 +17,12 @@ jobs:
 
     - name: Install helm
       uses: Azure/setup-helm@v1
-#       with:
-#         version: ${{ env.HELM_VERSION_TO_INSTALL }}
+      with:
+        version: ${{ env.HELM_VERSION_TO_INSTALL }}
     
     - name: Login to acr using helm
       run: |
-        echo ${{ secrets.GITKUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+        echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
     - name: Save helm chart to local registry
       run: |
