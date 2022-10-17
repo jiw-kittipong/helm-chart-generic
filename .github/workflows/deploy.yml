@@ -8,16 +8,11 @@ on:
 
 env:
   HELM_EXPERIMENTAL_OCI: 1
-  HELM_VERSION_TO_INSTALL: 3.5.0
+#   HELM_VERSION_TO_INSTALL: 3.5.0
   GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/helm-chart-generic
 
-
-
 jobs:
-  build:
-    permissions:
-      packages: write
-      
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
