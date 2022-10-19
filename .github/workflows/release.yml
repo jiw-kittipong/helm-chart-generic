@@ -5,14 +5,13 @@ on:
     tags:
       - 'v*'
 
-
 env:
   HELM_EXPERIMENTAL_OCI: 1
   HELM_VERSION_TO_INSTALL: 3.5.0
-  GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/helm-chart-generic
+  GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/deployment/helm-chart-generic
 
 jobs:
-  deploy:
+  Release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -22,7 +21,7 @@ jobs:
       uses: Azure/setup-helm@v3
       with:
         version: ${{ env.HELM_VERSION_TO_INSTALL }}
-    
+
     - name: Login to acr using helm
       run: |
         echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
