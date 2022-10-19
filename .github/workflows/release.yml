@@ -4,9 +4,9 @@ on:
   push:
     tags:
       - 'v*'
-  merge:
-    branches:
-      - 'master'
+#  merge:
+#    branches:
+#      - 'master'
 
 env:
   HELM_EXPERIMENTAL_OCI: 1
