@@ -4,9 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-#  merge:
-#    branches:
-#      - 'master'
 
 env:
   HELM_EXPERIMENTAL_OCI: 1
@@ -19,24 +16,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: TEST
-      run:
-        echo "${{ github.ref_name }}"
+    - name: Install helm
+      id: install
+      uses: Azure/setup-helm@v3
+      with:
+        version: ${{ env.HELM_VERSION_TO_INSTALL }}
 
-#    - name: Install helm
-#      id: install
-#      uses: Azure/setup-helm@v3
-#      with:
-#        version: ${{ env.HELM_VERSION_TO_INSTALL }}
-#
-#    - name: Login to acr using helm
-#      run: |
-#        echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
-#
-#    - name: Save helm chart to local registry
-#      run: |
-#        helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
-#
-#    - name: Publish chart to acr
-#      run: |
-#        helm chart push ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
+    - name: Login to acr using helm
+      run: |
+        echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
+
+    - name: Save helm chart to local registry
+      run: |
+        helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
+
+    - name: Publish chart to acr
+      run: |
+        helm chart push ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
