@@ -17,7 +17,6 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install helm
-      id: install
       uses: Azure/setup-helm@v3
       with:
         version: ${{ env.HELM_VERSION_TO_INSTALL }}
@@ -30,6 +29,6 @@ jobs:
       run: |
         helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
 
-    - name: Publish chart to acr
+    - name: Publish chart to gcr
       run: |
         helm chart push ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
