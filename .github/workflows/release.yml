@@ -1,15 +1,16 @@
-name: Deploy  
+name: Release
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - 'v*'
+
 
 env:
   HELM_EXPERIMENTAL_OCI: 1
   HELM_VERSION_TO_INSTALL: 3.5.0
   GCR_IMAGE: ghcr.io/${{ github.repository_owner }}/helm-chart-generic
-  VERSION: 1.0.0
-  
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,14 +23,14 @@ jobs:
       with:
         version: ${{ env.HELM_VERSION_TO_INSTALL }}
     
-    - name: Login to acr using helm 1
+    - name: Login to acr using helm
       run: |
         echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.GCR_IMAGE }} --username ${{ github.repository_owner }} --password-stdin
 
     - name: Save helm chart to local registry
       run: |
-        helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:${{ env.VERSION }}
+        helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
 
     - name: Publish chart to acr
       run: |
-        helm chart push ${{ env.GCR_IMAGE }}:${{ env.VERSION }}
+        helm chart push ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
