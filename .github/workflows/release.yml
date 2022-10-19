@@ -28,8 +28,8 @@ jobs:
 
     - name: Save helm chart to local registry
       run: |
-        helm chart save ${{ github.workspace }} ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
+        helm chart save ${{ github.workspace }} deployment/${{ env.GCR_IMAGE }}:${{ github.ref_name }}
 
     - name: Publish chart to acr
       run: |
-        helm chart push ${{ env.GCR_IMAGE }}:${{ github.ref_name }}
+        helm chart push deployment/${{ env.GCR_IMAGE }}:${{ github.ref_name }}
